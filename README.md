@@ -48,6 +48,10 @@ firefox-flash-kiosk/
 │   ├── openbox/
 │   │   └── rc.xml                # Configuracao do gerenciador de janelas
 │   │
+│   ├── novnc/
+│   │   ├── mandatory.json        # Configuracoes obrigatorias do noVNC
+│   │   └── index.html            # Pagina personalizada do noVNC
+│   │
 │   └── supervisor/
 │       └── supervisord.conf      # Gerenciador de processos
 │
