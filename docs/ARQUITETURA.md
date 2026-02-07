@@ -129,11 +129,16 @@ Fornecer um ambiente containerizado para executar aplicacoes web que dependem do
 /opt/novnc/utils/novnc_proxy --vnc localhost:5900 --listen 6080
 ```
 
+**Arquivos personalizados copiados para o container**:
+- `/opt/novnc/mandatory.json` - Configuracoes obrigatorias (autoconnect, resize, etc.)
+- `/opt/novnc/index.html` - Pagina customizada (interface limpa para kiosk)
+
 **Fluxo**:
 1. Usuario acessa `http://host:6080`
-2. noVNC carrega cliente JavaScript
-3. WebSocket conecta ao x11vnc local
-4. Imagem e eventos sao transmitidos
+2. noVNC carrega `index.html` customizado
+3. `mandatory.json` aplica configuracoes obrigatorias (autoconnect, resize remoto, etc.)
+4. WebSocket conecta automaticamente ao x11vnc local
+5. Imagem e eventos sao transmitidos
 
 ### 5. Firefox 53.0.3
 
@@ -290,6 +295,52 @@ lockPref("full-screen-api.warning.timeout", 0);
 - `defaultPref()` - Valor padrao
 - `lockPref()` - Valor bloqueado, usuario NAO pode alterar
 - `user_pref()` - Valor do usuario (nao usar em autoconfig)
+
+### /opt/novnc/mandatory.json
+
+```json
+{
+  "autoconnect": true,
+  "resize": "remote",
+  "clip": true,
+  "view_clip": true,
+  "shared": false,
+  "view_only": false,
+  "reconnect": true,
+  "reconnect_delay": 1000,
+  "show_dot": false,
+  "bell": false,
+  "keep_device_awake": true,
+  "quality": 8,
+  "compression": 4
+}
+```
+
+**Funcao**: Define configuracoes obrigatorias do noVNC que o usuario nao pode alterar pela interface.
+
+**Parametros**:
+- `autoconnect: true` - Conecta automaticamente ao VNC, sem necessidade de clicar "Connect"
+- `resize: "remote"` - Redimensiona o display remoto (Xvfb) para caber na janela do navegador
+- `clip: true` / `view_clip: true` - Recorta a visualizacao para nao ultrapassar a janela
+- `shared: false` - Apenas uma conexao por vez
+- `reconnect: true` / `reconnect_delay: 1000` - Reconecta automaticamente em 1 segundo
+- `keep_device_awake: true` - Impede que dispositivos moveis entrem em modo de espera
+- `quality: 8` - Alta qualidade de imagem (escala 0-9)
+- `compression: 4` - Compressao moderada (escala 0-9)
+
+### /opt/novnc/index.html
+
+**Funcao**: Pagina personalizada do cliente noVNC que substitui a pagina padrao.
+
+**Customizacoes aplicadas**:
+- Forca `dragViewport = true` apos conexao (permite arrastar viewport em dispositivos touch)
+- Oculta logo noVNC (`display: none` no `.noVNC_logo`)
+- Oculta botao de configuracoes (`display: none` no `#noVNC_settings_button`)
+- Oculta botao de desconectar (`display: none` no `#noVNC_disconnect_button`)
+- Oculta botao de extra keys e drag (interface limpa para modo kiosk)
+- Remove `pointer-events` do botao de drag
+
+**Motivo**: Em modo kiosk, o usuario final nao deve ter acesso a configuracoes, desconexao ou controles avancados do noVNC.
 
 ### /etc/xdg/openbox/rc.xml
 

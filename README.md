@@ -239,6 +239,47 @@ Configuracao do gerenciador de janelas Openbox:
 - Forca janelas em tela cheia
 - Configura foco automatico
 
+### config/novnc/mandatory.json
+
+Configuracoes **obrigatorias** do noVNC (usuario nao pode alterar):
+
+```json
+{
+  "autoconnect": true,
+  "resize": "remote",
+  "clip": true,
+  "view_clip": true,
+  "shared": false,
+  "view_only": false,
+  "reconnect": true,
+  "reconnect_delay": 1000,
+  "show_dot": false,
+  "bell": false,
+  "keep_device_awake": true,
+  "quality": 8,
+  "compression": 4
+}
+```
+
+| Parametro | Valor | Descricao |
+|-----------|-------|-----------|
+| `autoconnect` | `true` | Conecta automaticamente ao VNC ao abrir a pagina |
+| `resize` | `"remote"` | Redimensiona o display remoto para caber na janela |
+| `clip` | `true` | Recorta a visualizacao para o tamanho da janela |
+| `reconnect` | `true` | Reconecta automaticamente em caso de desconexao |
+| `reconnect_delay` | `1000` | Tempo (ms) para tentar reconectar |
+| `keep_device_awake` | `true` | Mantem o dispositivo cliente ativo |
+| `quality` | `8` | Qualidade da imagem (0-9, maior = melhor) |
+| `compression` | `4` | Nivel de compressao (0-9, maior = mais comprimido) |
+
+### config/novnc/index.html
+
+Pagina personalizada do cliente noVNC, copiada para dentro do container substituindo a pagina padrao. Customizacoes incluem:
+
+- Forca drag viewport ativo apos conexao (para navegacao mobile)
+- Oculta o logo noVNC, botao de settings e botao de disconnect
+- Oculta botoes de extra keys e drag (interface limpa para kiosk)
+
 ### config/supervisor/supervisord.conf
 
 Gerenciador de processos que:
