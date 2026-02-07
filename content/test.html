@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Flash Player</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .status {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .status h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .info-card {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+        .info-card strong {
+            display: block;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        .flash-placeholder {
+            background: #000;
+            color: #fff;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .flash-placeholder h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .instructions {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .instructions h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        .instructions ol {
+            margin-left: 20px;
+            color: #856404;
+        }
+        .instructions li {
+            margin: 8px 0;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            color: #666;
+        }
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Flash Player - Teste</h1>
+        <p class="subtitle">Ambiente de teste para Adobe Flash Player</p>
+
+        <div class="status">
+            <h3>✅ Status do Sistema</h3>
+            <p>Se você está vendo esta página, o servidor HTTP está funcionando corretamente!</p>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <strong>Navegador</strong>
+                <span id="browser">Firefox 53.0.3</span>
+            </div>
+            <div class="info-card">
+                <strong>Flash Plugin</strong>
+                <span>32.0.0.371</span>
+            </div>
+            <div class="info-card">
+                <strong>noVNC</strong>
+                <span>1.4.0</span>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 Área de Teste Flash</h2>
+            <div class="flash-placeholder">
+                <h2>📦 Seu conteúdo Flash aparecerá aqui</h2>
+                <p>Adicione seus arquivos .swf na pasta <code>flash/</code></p>
+                <p>Depois, incorpore-os nesta página ou acesse diretamente via URL</p>
+            </div>
+            
+            <!-- 
+            Descomente para testar com um arquivo Flash real:
+            
+            <object width="800" height="600">
+                <param name="movie" value="seu-arquivo.swf">
+                <param name="quality" value="high">
+                <param name="bgcolor" value="#000000">
+                <embed src="seu-arquivo.swf" 
+                       quality="high" 
+                       bgcolor="#000000" 
+                       width="800" 
+                       height="600" 
+                       type="application/x-shockwave-flash">
+                </embed>
+            </object>
+            -->
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Como adicionar seu conteúdo Flash:</h3>
+            <ol>
+                <li>Coloque seus arquivos <code>.swf</code> na pasta <code>flash/</code> do projeto</li>
+                <li>Reinicie o container se necessário: <code>docker-compose restart</code></li>
+                <li>Acesse diretamente: <code>http://localhost/arquivo.swf</code></li>
+                <li>Ou incorpore nesta página HTML usando a tag <code>&lt;object&gt;</code> ou <code>&lt;embed&gt;</code></li>
+            </ol>
+        </div>
+
+        <div class="success">
+            <strong>💡 Dica:</strong> Para testar se o Flash está funcionando, você pode:
+            <ul style="margin-top: 10px; margin-left: 20px;">
+                <li>Acessar <code>about:plugins</code> no Firefox para ver os plugins instalados</li>
+                <li>Baixar um arquivo .swf de teste da internet</li>
+                <li>Criar um arquivo Flash simples com ferramentas como Adobe Animate</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>🔗 Links Úteis</h2>
+            <ul>
+                <li><a href="about:plugins" style="color: #667eea;">about:plugins</a> - Ver plugins instalados no Firefox</li>
+                <li><a href="http://localhost:80" target="_blank" style="color: #667eea;">Interface noVNC</a> - Painel de controle</li>
+                <li><a href="http://localhost/" style="color: #667eea;">Servidor HTTP</a> - Raiz do servidor</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p><strong>Firefox Flash Kiosk</strong></p>
+            <p>Versão 1.0.0 | Janeiro 2026</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                ⚠️ Adobe Flash Player chegou ao EOL em 31/12/2020<br>
+                Este ambiente é para fins de preservação e compatibilidade
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Detectar informações do navegador
+        document.getElementById('browser').textContent = navigator.userAgent.includes('Firefox') 
+            ? 'Firefox ' + navigator.userAgent.match(/Firefox\/(\d+\.\d+)/)?.[1] 
+            : navigator.userAgent;
+    </script>
+</body>
+</html>

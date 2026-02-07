@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user-mapping>
+    
+    <!-- Usuário: abc / Senha: abc (MD5: 900150983cd24fb0d6963f7d28e17f72) -->
+    <authorize
+            username="abc"
+            password="900150983cd24fb0d6963f7d28e17f72"
+            encoding="md5">
+        
+        <!-- Conexão RDP -->
+        <connection name="RDP Local">
+            <protocol>rdp</protocol>
+            <param name="hostname">127.0.0.1</param>
+            <param name="port">3389</param>
+            <param name="color-depth">16</param>
+            <param name="ignore-cert">true</param>
+            <param name="username">abc</param>
+            <param name="password">abc</param>
+            <param name="server-layout">en-us-qwerty</param>
+        </connection>
+        
+        <!-- Conexão VNC (opcional) -->
+        <connection name="VNC Local">
+            <protocol>vnc</protocol>
+            <param name="hostname">localhost</param>
+            <param name="port">5900</param>
+            <param name="password">guacamole</param>
+        </connection>
+        
+    </authorize>
+    
+    <!-- Usuário adicional: admin / Senha: admin (MD5: 21232f297a57a5a743894a0e4a801fc3) -->
+    <authorize
+            username="admin"
+            password="21232f297a57a5a743894a0e4a801fc3"
+            encoding="md5">
+        
+        <connection name="VNC Desktop">
+            <protocol>vnc</protocol>
+            <param name="hostname">localhost</param>
+            <param name="port">5900</param>
+            <param name="password">guacamole</param>
+        </connection>
+        
+    </authorize>
+
+</user-mapping>

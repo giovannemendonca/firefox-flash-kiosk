@@ -1,0 +1,35 @@
+# User content (optional - uncomment if you don't want to track)
+# content/
+
+# Docker
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build artifacts
+*.pyc
+__pycache__/
+node_modules/
+
+# Backup files
+*.bak
+*.backup
+*-backup/

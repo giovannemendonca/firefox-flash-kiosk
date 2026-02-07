@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  flash-kiosk:
+    build: .
+    container_name: flash-kiosk
+    environment:
+      - WIDTH=390
+      - HEIGHT=900
+      - APPNAME=firefox-kiosk http://g1.globo.com/
+
+    ports:
+      - "80:6080"
+
+      # Servidor HTTP para arquivos Flash locais
+      - "8081:80"
+
+    volumes:
+      - ./content:/flash
+
+    restart: unless-stopped
