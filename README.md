@@ -43,8 +43,7 @@ firefox-flash-kiosk/
 ├── config/
 │   ├── firefox/
 │   │   ├── autoconfig.js         # Habilita configuracao automatica do Firefox
-│   │   ├── firefox.cfg           # Preferencias bloqueadas do Firefox
-│   │   └── prefs.js              # (legado) Preferencias do usuario
+│   │   └── firefox.cfg           # Preferencias bloqueadas do Firefox
 │   │
 │   ├── openbox/
 │   │   └── rc.xml                # Configuracao do gerenciador de janelas
@@ -54,17 +53,12 @@ firefox-flash-kiosk/
 │
 ├── scripts/
 │   ├── container/
-│   │   ├── start.sh              # Script de inicializacao do container
-│   │   └── http-server.sh        # Servidor HTTP para arquivos Flash locais
+│   │   └── start.sh              # Script de inicializacao do container
 │   │
 │   └── firefox/
 │       ├── kiosk.sh              # Inicia o Firefox
 │       ├── helper.sh             # Aplica tela cheia (F11)
 │       └── monitor.sh            # Monitora e mantem tela cheia
-│
-├── content/                      # Arquivos Flash locais (opcional)
-│   ├── index.html
-│   └── *.swf
 │
 └── docs/
     └── ARQUITETURA.md            # Documentacao tecnica detalhada
@@ -101,9 +95,6 @@ services:
       - APPNAME=firefox-kiosk https://meu-sistema-legado.com
     ports:
       - "80:6080"      # Acesso web via noVNC
-      - "8081:80"      # Servidor HTTP para arquivos Flash locais
-    volumes:
-      - ./content:/flash
     restart: unless-stopped
 ```
 
@@ -113,7 +104,6 @@ services:
 |-------|-----------|-----------|
 | `6080` | HTTP | noVNC - acesso via navegador web |
 | `5900` | VNC | Acesso VNC direto (cliente VNC) |
-| `80` | HTTP | Servidor de arquivos Flash locais |
 
 ---
 
@@ -174,7 +164,6 @@ make health     # Verificacao de saude
          ├─→ [20] openbox         → Gerenciador de janelas
          ├─→ [30] x11vnc          → Servidor VNC
          ├─→ [35] novnc           → Proxy web para VNC
-         ├─→ [40] httpd           → Servidor HTTP (arquivos Flash)
          ├─→ [50] app             → Firefox (apos 5s de delay)
          ├─→ [55] fullscreen-helper → Aplica F11 (apos 3s)
          └─→ [60] firefox-monitor → Monitora tela cheia
@@ -329,16 +318,6 @@ Reinicie o container:
 ```bash
 docker-compose down && docker-compose up -d
 ```
-
----
-
-## Arquivos Flash Locais
-
-Para servir arquivos Flash locais:
-
-1. Coloque os arquivos `.swf` na pasta `content/`
-2. Acesse via `http://localhost:8081/arquivo.swf`
-3. Ou configure o Firefox para abrir: `APPNAME=firefox-kiosk http://localhost/arquivo.swf`
 
 ---
 

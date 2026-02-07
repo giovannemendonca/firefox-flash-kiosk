@@ -22,7 +22,7 @@ RUN apt-get update && \
     xfonts-base xfonts-75dpi xfonts-100dpi \
     xvfb x11vnc openbox dbus-x11 wmctrl xdotool x11-apps \
     curl wget supervisor netcat bzip2 python3 python3-numpy \
-    libcurl4 libgtk-3-0 libgtk2.0-0 libdbus-glib-1-2 busybox dos2unix git \
+    libcurl4 libgtk-3-0 libgtk2.0-0 libdbus-glib-1-2 dos2unix git \
     && rm -rf /var/lib/apt/lists/*
 
 # Instalar noVNC (acesso via navegador)
@@ -52,7 +52,7 @@ RUN mkdir -p /player /usr/lib/mozilla/plugins && \
     rm -rf /tmp/*
 
 # Criar diretorios
-RUN mkdir -p /config /flash /tmp/.X11-unix /etc/xdg/openbox && \
+RUN mkdir -p /config /tmp/.X11-unix /etc/xdg/openbox && \
     chmod 1777 /tmp/.X11-unix
 
 # Copiar configuracoes do Firefox (autoconfig para bloquear preferencias)
@@ -67,18 +67,17 @@ COPY config/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Copiar scripts
 COPY scripts/container/start.sh /start.sh
-COPY scripts/container/http-server.sh /httpd.sh
 COPY scripts/firefox/kiosk.sh /usr/local/bin/firefox-kiosk
 COPY scripts/firefox/helper.sh /usr/local/bin/fullscreen-helper
 COPY scripts/firefox/monitor.sh /usr/local/bin/firefox-monitor
 
 # Converter line endings (Windows -> Linux) e dar permissao
-RUN dos2unix /start.sh /httpd.sh \
+RUN dos2unix /start.sh \
     /usr/local/bin/firefox-kiosk \
     /usr/local/bin/fullscreen-helper \
     /usr/local/bin/firefox-monitor \
     /etc/supervisor/conf.d/supervisord.conf && \
-    chmod +x /start.sh /httpd.sh \
+    chmod +x /start.sh \
     /usr/local/bin/firefox-kiosk \
     /usr/local/bin/fullscreen-helper \
     /usr/local/bin/firefox-monitor
@@ -86,8 +85,7 @@ RUN dos2unix /start.sh /httpd.sh \
 # Portas expostas
 # 6080 = noVNC (acesso web)
 # 5900 = VNC direto
-# 80 = HTTP para arquivos Flash
-EXPOSE 6080 5900 80
+EXPOSE 6080 5900
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
     CMD netcat -z localhost 5900 || exit 1

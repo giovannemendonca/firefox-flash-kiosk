@@ -60,18 +60,18 @@ Fornecer um ambiente containerizado para executar aplicacoes web que dependem do
 │  │  │      + Flash Player Plugin        │      │           │   │
 │  │  └───────────────────────────────────┘      │           │   │
 │  │                                              │           │   │
-│  │  ┌─────────┐  ┌──────────────────┐          │           │   │
-│  │  │  httpd  │  │ fullscreen-helper│          │           │   │
-│  │  │  :80    │  │ firefox-monitor  │          │           │   │
-│  │  └─────────┘  └──────────────────┘          │           │   │
+│  │  ┌──────────────────┐                        │           │   │
+│  │  │ fullscreen-helper│                        │           │   │
+│  │  │ firefox-monitor  │                        │           │   │
+│  │  └──────────────────┘                        │           │   │
 │  │                                              │           │   │
 │  └──────────────────────────────────────────────────────────┘   │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-        │              │              │
-        │ :80          │ :5900        │ :6080
-        ▼              ▼              ▼
-   HTTP Flash      VNC Direto     noVNC Web
+                       │              │
+                       │ :5900        │ :6080
+                       ▼              ▼
+                  VNC Direto     noVNC Web
 ```
 
 ---
@@ -170,17 +170,6 @@ Fornecer um ambiente containerizado para executar aplicacoes web que dependem do
 - Reinicia processos que falham (autorestart)
 - Gerencia logs
 
-### 8. HTTP Server (busybox httpd)
-
-**Funcao**: Servidor HTTP simples para arquivos Flash locais.
-
-**Configuracao**:
-```bash
-/bin/busybox httpd -f -p 80 -h /flash
-```
-
-**Uso**: Coloque arquivos `.swf` em `/flash` (mapeado para `./content`)
-
 ---
 
 ## Fluxo de Inicializacao
@@ -224,11 +213,6 @@ Container Start
 │     noVNC       │  Proxy WebSocket                    │
 └────────┬────────┘                                     │
          │                                              │
-         ▼ [priority=40, startsecs=2]                   │
-┌─────────────────┐                                     │
-│     httpd       │  Servidor HTTP                      │
-└────────┬────────┘                                     │
-         │                                              │
          ▼ [priority=50, sleep 5]                       │
 ┌─────────────────┐                                     │
 │    Firefox      │  Navegador + Flash                  │
@@ -257,7 +241,6 @@ Container Start
 | Openbox | startsecs=3 | ~4s |
 | x11vnc | startsecs=3 | ~4s |
 | noVNC | startsecs=3 | ~4s |
-| httpd | startsecs=2 | ~3s |
 | Firefox | sleep 5 | ~8s |
 | fullscreen-helper | sleep 3 + deteccao | ~15s |
 | firefox-monitor | startsecs=5 | ~10s |
@@ -501,7 +484,6 @@ environment:
 ```yaml
 ports:
   - "80:6080"    # noVNC (acesso web)
-  - "8081:80"    # HTTP (arquivos Flash)
   - "5900:5900"  # VNC direto (opcional)
 ```
 
@@ -512,8 +494,6 @@ Internet/LAN
      │
      ├─── :80 ──────► noVNC (:6080) ──► x11vnc (:5900) ──► Xvfb (:0)
      │
-     ├─── :8081 ────► httpd (:80) ──► /flash/*
-     │
      └─── :5900 ────► x11vnc (:5900) ──► Xvfb (:0)  [opcional]
 ```
 
@@ -523,7 +503,6 @@ Internet/LAN
 |-------|-----------|-----------|
 | 6080 | HTTP + WebSocket | Sem criptografia |
 | 5900 | RFB (VNC) | Sem criptografia |
-| 80 | HTTP | Sem criptografia |
 
 **Nota**: Para producao, considere usar proxy reverso com HTTPS.
 
@@ -544,8 +523,6 @@ Internet/LAN
 ├── x11vnc-error.log
 ├── novnc.log           # Proxy web
 ├── novnc-error.log
-├── httpd.log           # Servidor HTTP
-├── httpd-error.log
 ├── app.log             # Firefox
 ├── app-error.log
 ├── fullscreen.log      # Helper F11
@@ -603,11 +580,6 @@ Coloque arquivos `.xpi` em um volume e instale manualmente ou via autoconfig.
 environment:
   - APPNAME=firefox-kiosk https://minha-pagina.com
 ```
-
-### Usar Arquivos Flash Locais
-
-1. Coloque `.swf` em `./content/`
-2. Configure: `APPNAME=firefox-kiosk http://localhost/arquivo.swf`
 
 ### Aumentar Resolucao
 
