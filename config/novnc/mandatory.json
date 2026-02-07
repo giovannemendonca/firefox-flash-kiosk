@@ -1,0 +1,15 @@
+{
+  "autoconnect": true,
+  "resize": "remote",
+  "clip": true,
+  "view_clip": true,
+  "shared": false,
+  "view_only": false,
+  "reconnect": true,
+  "reconnect_delay": 1000,
+  "show_dot": false,
+  "bell": false,
+  "keep_device_awake": true,
+  "quality": 8,
+  "compression": 4
+}

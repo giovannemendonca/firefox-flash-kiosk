@@ -96,6 +96,7 @@ COPY --from=builder /etc/supervisor/conf.d/supervisord.conf /etc/supervisor/conf
 COPY config/firefox/autoconfig.js /firefox/defaults/pref/autoconfig.js
 COPY config/firefox/firefox.cfg /firefox/firefox.cfg
 COPY config/openbox/rc.xml /etc/xdg/openbox/rc.xml
+COPY config/novnc/mandatory.json /opt/novnc/mandatory.json
 
 # Portas expostas
 # 6080 = noVNC (acesso web)
