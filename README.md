@@ -78,8 +78,8 @@ Configure no arquivo `docker-compose.yml`:
 
 | Variavel | Padrao | Descricao |
 |----------|--------|-----------|
-| `WIDTH` | `768` | Largura da tela em pixels |
-| `HEIGHT` | `1024` | Altura da tela em pixels |
+| `WIDTH` | `768` | Largura da resolucao interna (noVNC escala para a tela do cliente) |
+| `HEIGHT` | `1024` | Altura da resolucao interna (noVNC escala para a tela do cliente) |
 | `APPNAME` | `firefox-kiosk about:blank` | Comando a executar (Firefox + URL) |
 | `VNC_PORT` | `5900` | Porta do servidor VNC interno |
 | `NOVNC_PORT` | `6080` | Porta do noVNC (acesso web) |
@@ -246,9 +246,9 @@ Configuracoes **obrigatorias** do noVNC (usuario nao pode alterar):
 ```json
 {
   "autoconnect": true,
-  "resize": "remote",
-  "clip": true,
-  "view_clip": true,
+  "resize": "scale",
+  "clip": false,
+  "view_clip": false,
   "shared": false,
   "view_only": false,
   "reconnect": true,
@@ -264,8 +264,8 @@ Configuracoes **obrigatorias** do noVNC (usuario nao pode alterar):
 | Parametro | Valor | Descricao |
 |-----------|-------|-----------|
 | `autoconnect` | `true` | Conecta automaticamente ao VNC ao abrir a pagina |
-| `resize` | `"remote"` | Redimensiona o display remoto para caber na janela |
-| `clip` | `true` | Recorta a visualizacao para o tamanho da janela |
+| `resize` | `"scale"` | Escala a imagem no navegador para caber na janela do cliente |
+| `clip` | `false` | Desativado para permitir o scaling (clip impede o scale) |
 | `reconnect` | `true` | Reconecta automaticamente em caso de desconexao |
 | `reconnect_delay` | `1000` | Tempo (ms) para tentar reconectar |
 | `keep_device_awake` | `true` | Mantem o dispositivo cliente ativo |
@@ -276,7 +276,7 @@ Configuracoes **obrigatorias** do noVNC (usuario nao pode alterar):
 
 Pagina personalizada do cliente noVNC, copiada para dentro do container substituindo a pagina padrao. Customizacoes incluem:
 
-- Forca drag viewport ativo apos conexao (para navegacao mobile)
+- Forca `scaleViewport = true` e `clipViewport = false` apos conexao (garante scaling)
 - Oculta o logo noVNC, botao de settings e botao de disconnect
 - Oculta botoes de extra keys e drag (interface limpa para kiosk)
 

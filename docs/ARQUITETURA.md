@@ -136,9 +136,9 @@ Fornecer um ambiente containerizado para executar aplicacoes web que dependem do
 **Fluxo**:
 1. Usuario acessa `http://host:6080`
 2. noVNC carrega `index.html` customizado
-3. `mandatory.json` aplica configuracoes obrigatorias (autoconnect, resize remoto, etc.)
+3. `mandatory.json` aplica configuracoes obrigatorias (autoconnect, scale local, etc.)
 4. WebSocket conecta automaticamente ao x11vnc local
-5. Imagem e eventos sao transmitidos
+5. Imagem e transmitida e escalada no navegador para caber na tela do cliente
 
 ### 5. Firefox 53.0.3
 
@@ -301,9 +301,9 @@ lockPref("full-screen-api.warning.timeout", 0);
 ```json
 {
   "autoconnect": true,
-  "resize": "remote",
-  "clip": true,
-  "view_clip": true,
+  "resize": "scale",
+  "clip": false,
+  "view_clip": false,
   "shared": false,
   "view_only": false,
   "reconnect": true,
@@ -320,8 +320,8 @@ lockPref("full-screen-api.warning.timeout", 0);
 
 **Parametros**:
 - `autoconnect: true` - Conecta automaticamente ao VNC, sem necessidade de clicar "Connect"
-- `resize: "remote"` - Redimensiona o display remoto (Xvfb) para caber na janela do navegador
-- `clip: true` / `view_clip: true` - Recorta a visualizacao para nao ultrapassar a janela
+- `resize: "scale"` - Escala a imagem no navegador (client-side) para caber na janela, sem alterar a resolucao do Xvfb
+- `clip: false` / `view_clip: false` - Desativados para permitir que o scale funcione (clip e scale sao mutuamente exclusivos)
 - `shared: false` - Apenas uma conexao por vez
 - `reconnect: true` / `reconnect_delay: 1000` - Reconecta automaticamente em 1 segundo
 - `keep_device_awake: true` - Impede que dispositivos moveis entrem em modo de espera
@@ -333,12 +333,11 @@ lockPref("full-screen-api.warning.timeout", 0);
 **Funcao**: Pagina personalizada do cliente noVNC que substitui a pagina padrao.
 
 **Customizacoes aplicadas**:
-- Forca `dragViewport = true` apos conexao (permite arrastar viewport em dispositivos touch)
+- Forca `scaleViewport = true` e `clipViewport = false` apos conexao (garante scaling correto)
 - Oculta logo noVNC (`display: none` no `.noVNC_logo`)
 - Oculta botao de configuracoes (`display: none` no `#noVNC_settings_button`)
 - Oculta botao de desconectar (`display: none` no `#noVNC_disconnect_button`)
-- Oculta botao de extra keys e drag (interface limpa para modo kiosk)
-- Remove `pointer-events` do botao de drag
+- Oculta botoes de extra keys, clipboard, fullscreen e drag (interface limpa para modo kiosk)
 
 **Motivo**: Em modo kiosk, o usuario final nao deve ter acesso a configuracoes, desconexao ou controles avancados do noVNC.
 

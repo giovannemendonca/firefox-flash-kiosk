@@ -1,8 +1,8 @@
 {
   "autoconnect": true,
-  "resize": "remote",
-  "clip": true,
-  "view_clip": true,
+  "resize": "scale",
+  "clip": false,
+  "view_clip": false,
   "shared": false,
   "view_only": false,
   "reconnect": true,
